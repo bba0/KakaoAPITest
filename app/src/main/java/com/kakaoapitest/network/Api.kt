@@ -2,15 +2,27 @@ package com.kakaoapitest.network
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory
+import com.kakaoapitest.model.BlogModel
+import com.kakaoapitest.model.Document
+import com.kakaoapitest.model.SearchApiModel
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 object Api {
-    private val HOST = "http://dapi.kakao.com"
-    private val KAKAO_API_KEY = "KakaoAK 0904ee87d5006949d5c8c5aeeb303038"
+    private const val HOST = "https://dapi.kakao.com"
+    private const val KAKAO_API_KEY = "KakaoAK 0904ee87d5006949d5c8c5aeeb303038"
+    private const val GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS+HH:mm"
     val gson: Gson by lazy {
         GsonBuilder().run {
             setLenient()
+            setDateFormat(GSON_DATE_FORMAT)
             create()
         }
     }
@@ -29,9 +41,24 @@ object Api {
         Retrofit.Builder().run {
             baseUrl(HOST)
             client(client)
+            addConverterFactory(GsonConverterFactory.create(gson))
+            addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             build()
         }
     }
 
+
+    private fun request(): ApiService = retrofit.create(ApiService::class.java)
+
+    fun searchBlog(query: String) : Observable<SearchApiModel> {
+        return request().searchBlog(query = query)
+            .compose(transformerIOMainThread())
+    }
+
+    fun <T> transformerIOMainThread(): ObservableTransformer<T, T> {
+        return ObservableTransformer { upstream ->
+            upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        }
+    }
 
 }
