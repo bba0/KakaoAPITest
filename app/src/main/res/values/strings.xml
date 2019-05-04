@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">KakaoAPITest</string>
+    <string name="search">검색</string>
+    <string name="sort">정렬</string>
 </resources>

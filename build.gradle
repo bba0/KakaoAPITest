@@ -8,6 +8,7 @@ buildscript {
         rxAndroidVersion = '2.1.1'
         retrofitVersion = '2.5.0'
         gsonVersion = '2.8.5'
+        frescoVersion = '1.13.0'
     }
 
     repositories {
