@@ -11,7 +11,7 @@ class MainPresenter(override var mVie: MainContract.View) : MainContract.Present
         searchCafe(query)
     }
 
-    fun searchBlog(query: String) {
+    private fun searchBlog(query: String) {
         Api.searchBlog(query)
             .flatMap {
                 Observable.fromIterable(it.documents)
@@ -32,7 +32,7 @@ class MainPresenter(override var mVie: MainContract.View) : MainContract.Present
     }
 
 
-    fun searchCafe(query: String) {
+    private fun searchCafe(query: String) {
         Api.searchCafe(query)
             .flatMap {
                 Observable.fromIterable(it.documents)
