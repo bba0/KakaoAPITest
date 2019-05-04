@@ -2,4 +2,5 @@
     <string name="app_name">KakaoAPITest</string>
     <string name="search">검색</string>
     <string name="sort">정렬</string>
+    <string name="insert_query">검색어를 넣어주세요</string>
 </resources>

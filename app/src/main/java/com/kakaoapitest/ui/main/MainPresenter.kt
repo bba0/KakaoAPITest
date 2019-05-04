@@ -7,7 +7,7 @@ import io.reactivex.Observable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainPresenter(override var mVie: MainContract.View) : MainContract.Presenter {
+class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
     override fun search(query: String) {
         var observableList = ArrayList<Observable<List<Document>>>()
         observableList.add(searchBlog(query))
@@ -29,7 +29,7 @@ class MainPresenter(override var mVie: MainContract.View) : MainContract.Present
             .toObservable()
             .compose(Api.transformerIOMainThread())
             .subscribe({
-                Log.e("lol", it.toString())
+                mView.setDocument(it)
             }, {
                 Log.e("lol", it.message)
             }, {
