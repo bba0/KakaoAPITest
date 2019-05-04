@@ -1,9 +1,10 @@
-package com.kakaoapitest
+package com.kakaoapitest.ui.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.kakaoapitest.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
