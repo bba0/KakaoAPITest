@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory
 import com.kakaoapitest.model.BlogModel
+import com.kakaoapitest.model.CafeModel
 import com.kakaoapitest.model.Document
 import com.kakaoapitest.model.SearchApiModel
 import io.reactivex.Observable
@@ -50,9 +51,12 @@ object Api {
 
     private fun request(): ApiService = retrofit.create(ApiService::class.java)
 
-    fun searchBlog(query: String) : Observable<SearchApiModel> {
+    fun searchBlog(query: String) : Observable<SearchApiModel<BlogModel>> {
         return request().searchBlog(query = query)
-            .compose(transformerIOMainThread())
+    }
+
+    fun searchCafe(query: String) : Observable<SearchApiModel<CafeModel>> {
+        return request().searchCafe(query = query)
     }
 
     fun <T> transformerIOMainThread(): ObservableTransformer<T, T> {
