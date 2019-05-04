@@ -1,5 +1,6 @@
 package com.kakaoapitest.model
 
+import com.ext.getString
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -16,4 +17,26 @@ abstract class Document {
     open var label: String = "Document"
     @SerializedName("document_date")
     open var date: Date? = null
+    var dateToString: String = ""
+    get() {
+        return date?.run {
+            Calendar.getInstance().run {
+                var today = time.getString()
+                add(Calendar.DAY_OF_YEAR, -1)
+                var yesterday = time.getString()
+                var day = getString()
+                return when(day) {
+                    today -> {
+                        "오늘"
+                    }
+                    yesterday -> {
+                        "어제"
+                    }
+                    else -> {
+                        day
+                    }
+                }
+            }
+        } ?: ""
+    }
 }
