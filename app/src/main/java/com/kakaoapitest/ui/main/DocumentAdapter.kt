@@ -38,7 +38,7 @@ class DocumentAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     p0.title.text = title
                     p0.name.text = name
                     p0.label.text = label
-                    p0.date.text = date?.toString()
+                    p0.date.text = dateToString
                 }
             }
         }
