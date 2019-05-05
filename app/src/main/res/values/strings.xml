@@ -3,4 +3,6 @@
     <string name="search">검색</string>
     <string name="sort">정렬</string>
     <string name="insert_query">검색어를 넣어주세요</string>
+    <string name="empty_document">정보가 없습니다</string>
+    <string name="link">링크</string>
 </resources>

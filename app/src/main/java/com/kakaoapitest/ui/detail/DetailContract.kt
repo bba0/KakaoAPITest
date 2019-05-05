@@ -7,10 +7,10 @@ import com.kakaoapitest.ui.base.BaseView
 interface DetailContract {
     interface View: BaseView {
         fun setDocument(document: Document)
+        fun documentError()
     }
 
     interface Presenter: BasePresenter<View> {
         fun getDocument(url: String)
-        fun resume()
     }
 }
