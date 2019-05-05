@@ -1,7 +1,7 @@
 package com.kakaoapitest.data.model
 
-import com.kakaoapitest.ext.getString
 import com.google.gson.annotations.SerializedName
+import com.kakaoapitest.ext.getString
 import java.util.*
 
 abstract class Document {
@@ -20,30 +20,31 @@ abstract class Document {
     @SerializedName("document_content")
     open var content: String? = ""
     var dateToString: String = ""
-    get() {
-        return date?.run {
-            Calendar.getInstance().run {
-                var today = time.getString()
-                add(Calendar.DAY_OF_YEAR, -1)
-                var yesterday = time.getString()
-                var day = getString()
-                return when(day) {
-                    today -> {
-                        "오늘"
-                    }
-                    yesterday -> {
-                        "어제"
-                    }
-                    else -> {
-                        day
+        get() {
+            return date?.run {
+                Calendar.getInstance().run {
+                    var today = time.getString()
+                    add(Calendar.DAY_OF_YEAR, -1)
+                    var yesterday = time.getString()
+                    var day = getString()
+                    return when (day) {
+                        today -> {
+                            "오늘"
+                        }
+                        yesterday -> {
+                            "어제"
+                        }
+                        else -> {
+                            day
+                        }
                     }
                 }
-            }
-        } ?: ""
-    }
+            } ?: ""
+        }
 
-    var dateToDetail: String =""
-    get() = date?.getString("yyyy년 MM월 dd일 a HH시 mm분") ?: ""
-
+    var dateToDetail: String = ""
+        get() = date?.getString("yyyy년 MM월 dd일 a HH시 mm분") ?: ""
+    var urlHttps: String? = ""
+        get() = url?.replace("http", "https")
     var isOpen = false
 }
