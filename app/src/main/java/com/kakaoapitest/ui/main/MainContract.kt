@@ -7,9 +7,13 @@ import com.kakaoapitest.ui.base.BaseView
 interface MainContract {
     interface View: BaseView {
         fun setDocument(documentList: List<Document>)
+        fun addDocument(documentList: List<Document>)
     }
 
     interface Presenter: BasePresenter<View> {
         fun search(query: String)
+        fun search(query: String, isMore: Boolean)
+        fun changeSortType(index: Int)
+        fun changeApiType(index: Int)
     }
 }

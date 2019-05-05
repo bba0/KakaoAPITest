@@ -10,7 +10,12 @@ import com.kakaoapitest.model.Document
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {
+    override fun addDocument(documentList: List<Document>) {
+
+    }
+
     override fun setDocument(documentList: List<Document>) {
+        mAdapter.clearData()
         mAdapter.addData(documentList)
     }
 
@@ -30,7 +35,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         search_button.setOnClickListener {
             search_edit_text.text.toString().run {
                 if (!TextUtils.isEmpty(trim())) {
-                    mAdapter.clearData()
                     mPresenter.search(this)
                 } else {
                     toast(R.string.insert_query)

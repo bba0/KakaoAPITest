@@ -8,10 +8,31 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
+    var mSortType = SortType.TITLE
+    var mApiType = ApiType.ALL
+    var mQuery = ""
+    var mDocumentList = ArrayList<Document>()
+
     override fun search(query: String) {
-        var observableList = ArrayList<Observable<List<Document>>>()
-        observableList.add(searchBlog(query))
-        observableList.add(searchCafe(query))
+        search(query, false)
+    }
+
+    override fun search(query: String, isMore: Boolean) {
+        mQuery = query
+        var observableList = ArrayList<Observable<List<Document>>>().apply {
+            when(mApiType) {
+                ApiType.BLOG -> {
+                    add(searchBlog(query))
+                }
+                ApiType.CAFE -> {
+                    add(searchCafe(query))
+                }
+                else -> {
+                    add(searchBlog(query))
+                    add(searchCafe(query))
+                }
+            }
+        }
         Observable.zip(observableList) {
             it
         }.map {
@@ -26,15 +47,44 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
                 Observable.fromIterable(it)
             }
             .toList()
+            .map {
+                sortList(it)
+            }
             .toObservable()
             .compose(Api.transformerIOMainThread())
             .subscribe({
-                mView.setDocument(it)
+                if (isMore) {
+                    mDocumentList.addAll(it)
+                    mView.addDocument(it)
+                } else {
+                    mDocumentList.apply {
+                        clear()
+                        addAll(it)
+                    }
+                    mView.setDocument(it)
+                }
+
             }, {
                 Log.e("lol", it.message)
             }, {
 
             })
+    }
+
+    private fun sortList(it: List<Document>): List<Document> {
+        when (mSortType) {
+            SortType.DATE -> {
+                it.sortedBy {
+                    it.date?.time ?: 0
+                }
+            }
+            SortType.TITLE -> {
+                it.sortedBy {
+                    it.title ?: ""
+                }
+            }
+        }
+        return it
     }
 
     private fun searchBlog(query: String): Observable<List<Document>> {
@@ -60,6 +110,33 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
             }
             .toList()
             .toObservable()
+    }
+
+    override fun changeApiType(index: Int) {
+        ApiType.values()[index].apply {
+            if (mApiType != this) {
+                mApiType = this
+                search(mQuery)
+            }
+        }
+    }
+
+    override fun changeSortType(index: Int) {
+        SortType.values()[index].apply {
+            if (mSortType != this) {
+                mSortType = this
+                sortList(mDocumentList)
+                mView.setDocument(mDocumentList)
+            }
+        }
+    }
+
+    enum class SortType {
+        TITLE, DATE
+    }
+
+    enum class ApiType {
+        ALL, BLOG, CAFE
     }
 
 }
