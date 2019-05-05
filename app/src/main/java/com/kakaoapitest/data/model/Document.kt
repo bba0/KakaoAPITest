@@ -44,7 +44,5 @@ abstract class Document {
 
     var dateToDetail: String = ""
         get() = date?.getString("yyyy년 MM월 dd일 a HH시 mm분") ?: ""
-    var urlHttps: String? = ""
-        get() = url?.replace("http", "https")
     var isOpen = false
 }

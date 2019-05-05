@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.widget.ArrayAdapter
 import com.kakaoapitest.ext.toast
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         const val EXTRA_DOCUMENT_URL = "documentUrl"
     }
     var reloadSize = 10
+    var mAutoCompleteAdapter: ArrayAdapter<String>? = null
     override fun addDocument(documentList: List<Document>) {
         mAdapter.addData(documentList)
     }
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         search_recycler_view.adapter = mAdapter
         search_recycler_view.layoutManager = mLinearLayoutManager
         search_button.setOnClickListener {
-            search_edit_text.text.toString().run {
+            search_auto_complete_text_view.text.toString().run {
                 if (!TextUtils.isEmpty(trim())) {
                     mPresenter.search(this, false)
                 } else {
@@ -50,7 +52,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
             }
         }
-
         search_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -59,6 +60,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
             }
         })
+        search_auto_complete_text_view.run {
+            mAutoCompleteAdapter =  ArrayAdapter(context, android.R.layout.simple_list_item_1, ArrayList<String>())
+            setAdapter(mAutoCompleteAdapter)
+            threshold = 1
+            setOnTouchListener { _, _ ->
+                search_auto_complete_text_view.showDropDown()
+                return@setOnTouchListener false
+            }
+            setOnItemClickListener { parent, _, position, _ ->
+                mPresenter.search(parent.getItemAtPosition(position) as String, false)
+            }
+        }
     }
 
     override fun onResume() {

@@ -16,6 +16,10 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     private var isLoading = false
 
     override fun search(query: String, isMore: Boolean) {
+        if (query.isNullOrEmpty()) {
+            return
+        }
+
         if (isMore) {
             mPage++
         } else {
@@ -90,7 +94,6 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     override fun resume() {
         mView.setDocument(sortList(mDocumentRepository.getAllCacheDocuments()))
     }
-
     enum class SortType {
         TITLE, DATE
     }
@@ -98,5 +101,4 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     enum class ApiType {
         ALL, BLOG, CAFE
     }
-
 }

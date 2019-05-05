@@ -1,10 +1,11 @@
 package com.kakaoapitest.ui.main
 
-import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.kakaoapitest.R
@@ -32,7 +33,7 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
 
 
     override fun onBindViewHolder(p0: RecyclerView.ViewHolder, position: Int) {
-        when(p0) {
+        when (p0) {
             is DocumentViewHolder -> {
                 mDocumentList[position - 1].run {
                     p0.thumbnail.setImageURI(imageUrl)
@@ -43,11 +44,37 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
                     p0.itemView.setOnClickListener {
                         onItemClick(this)
                     }
-                    p0.itemView.setBackgroundResource(if (isOpen) {
-                        R.color.dimmed
-                    } else {
-                        R.color.white
-                    })
+                    p0.itemView.setBackgroundResource(
+                        if (isOpen) {
+                            R.color.dimmed
+                        } else {
+                            R.color.white
+                        }
+                    )
+                }
+            }
+            is HeaderViewHolder -> {
+                p0.sortTestView.run {
+                    setAdapter(p0.mAutoCompleteAdapter)
+                    threshold = 1
+                    setOnTouchListener { _, _ ->
+                        showDropDown()
+                        return@setOnTouchListener false
+                    }
+                    setOnItemClickListener { parent, _, position, _ ->
+                        var type = parent.getItemAtPosition(position) as String
+                        p0.mAutoCompleteAdapter.clear()
+                        if (type == "All") {
+                            p0.mAutoCompleteAdapter.add("Blog")
+                            p0.mAutoCompleteAdapter.add("Cafe")
+                        } else if (type == "Blog") {
+                            p0.mAutoCompleteAdapter.add("All")
+                            p0.mAutoCompleteAdapter.add("Cafe")
+                        } else {
+                            p0.mAutoCompleteAdapter.add("All")
+                            p0.mAutoCompleteAdapter.add("Blog")
+                        }
+                    }
                 }
             }
         }
@@ -84,7 +111,9 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
     }
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        val sortTestView: AutoCompleteTextView = itemView.findViewById(R.id.sort_text_view)
+        var mAutoCompleteAdapter =
+            ArrayAdapter(itemView.context, android.R.layout.simple_list_item_1, arrayListOf("Blog", "Cafe"))
     }
 
 }
