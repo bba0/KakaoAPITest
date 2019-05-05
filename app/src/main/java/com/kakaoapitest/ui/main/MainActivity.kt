@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         mAdapter.addData(documentList)
     }
 
-    val mPresenter by lazy {
+    private val mPresenter by lazy {
         MainPresenter(this)
     }
     private val mLinearLayoutManager = LinearLayoutManager(this)
@@ -38,5 +38,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mPresenter.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mPresenter.pause()
     }
 }
