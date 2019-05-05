@@ -1,4 +1,4 @@
-package com.kakaoapitest.data.source
+package com.kakaoapitest.data.source.document
 
 import com.kakaoapitest.data.model.Document
 import com.kakaoapitest.network.Api
@@ -10,7 +10,8 @@ import kotlin.collections.ArrayList
 
 object RemoteDocumentDataSource : DocumentDataSource {
 
-    override fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>> = moreDocuments(apiType, 1, query)
+    override fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>> =
+        moreDocuments(apiType, 1, query)
 
     override fun moreDocuments(apiType: MainPresenter.ApiType, page: Int, query: String): Single<List<Document>> {
         var observableList = ArrayList<Observable<List<Document>>>().apply {

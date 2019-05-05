@@ -1,4 +1,4 @@
-package com.kakaoapitest.data.source
+package com.kakaoapitest.data.source.document
 
 import com.kakaoapitest.data.model.Document
 import com.kakaoapitest.ui.main.MainPresenter

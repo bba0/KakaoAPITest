@@ -2,7 +2,7 @@ package com.kakaoapitest.ui.main
 
 import android.util.Log
 import com.kakaoapitest.data.model.Document
-import com.kakaoapitest.data.source.DocumentRepository
+import com.kakaoapitest.data.source.document.DocumentRepository
 import com.kakaoapitest.network.Api
 import io.reactivex.disposables.CompositeDisposable
 

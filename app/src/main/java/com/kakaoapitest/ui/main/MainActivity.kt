@@ -1,6 +1,5 @@
 package com.kakaoapitest.ui.main
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -9,9 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.widget.ArrayAdapter
-import com.kakaoapitest.ext.toast
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.ext.toast
 import com.kakaoapitest.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 

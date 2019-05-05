@@ -1,7 +1,7 @@
 package com.kakaoapitest.ui.detail
 
 import com.kakaoapitest.data.model.Document
-import com.kakaoapitest.data.source.DocumentRepository
+import com.kakaoapitest.data.source.document.DocumentRepository
 
 class DetailPresenter(override var mView: DetailContract.View) : DetailContract.Presenter {
     private var mDocument: Document? = null
