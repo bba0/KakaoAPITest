@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import com.ext.toast
+import com.kakaoapitest.ext.toast
 import com.kakaoapitest.R
-import com.data.model.Document
+import com.kakaoapitest.data.model.Document
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {

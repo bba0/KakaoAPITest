@@ -2,9 +2,9 @@ package com.kakaoapitest.network
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.data.model.BlogModel
-import com.data.model.CafeModel
-import com.data.model.SearchApiModel
+import com.kakaoapitest.data.model.BlogModel
+import com.kakaoapitest.data.model.CafeModel
+import com.kakaoapitest.data.model.SearchApiModel
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers

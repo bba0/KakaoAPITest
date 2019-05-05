@@ -1,4 +1,4 @@
-package com.data.model
+package com.kakaoapitest.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.util.*

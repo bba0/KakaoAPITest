@@ -1,8 +1,8 @@
 package com.kakaoapitest.network
 
-import com.data.model.BlogModel
-import com.data.model.CafeModel
-import com.data.model.SearchApiModel
+import com.kakaoapitest.data.model.BlogModel
+import com.kakaoapitest.data.model.CafeModel
+import com.kakaoapitest.data.model.SearchApiModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,6 +1,6 @@
-package com.data.source
+package com.kakaoapitest.data.source
 
-import com.data.model.Document
+import com.kakaoapitest.data.model.Document
 import com.kakaoapitest.ui.main.MainPresenter
 import io.reactivex.Observable
 import io.reactivex.Single

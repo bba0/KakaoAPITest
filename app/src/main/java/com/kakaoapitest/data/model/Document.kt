@@ -1,6 +1,6 @@
-package com.data.model
+package com.kakaoapitest.data.model
 
-import com.ext.getString
+import com.kakaoapitest.ext.getString
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
