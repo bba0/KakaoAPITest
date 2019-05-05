@@ -74,12 +74,12 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     private fun sortList(it: List<Document>): List<Document> {
         var sortList = when (mSortType) {
             SortType.DATE -> {
-                it.sortedByDescending {
+                it.sortedBy {
                     it.date?.time ?: 0
                 }
             }
             SortType.TITLE -> {
-                it.sortedByDescending {
+                it.sortedBy {
                     it.title ?: ""
                 }
             }
