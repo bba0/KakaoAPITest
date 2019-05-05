@@ -72,19 +72,19 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     }
 
     private fun sortList(it: List<Document>): List<Document> {
-        when (mSortType) {
+        var sortList = when (mSortType) {
             SortType.DATE -> {
-                it.sortedBy {
+                it.sortedByDescending {
                     it.date?.time ?: 0
                 }
             }
             SortType.TITLE -> {
-                it.sortedBy {
+                it.sortedByDescending {
                     it.title ?: ""
                 }
             }
         }
-        return it
+        return sortList
     }
 
     private fun searchBlog(query: String): Observable<List<Document>> {
