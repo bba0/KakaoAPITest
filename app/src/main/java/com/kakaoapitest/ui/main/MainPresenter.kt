@@ -13,6 +13,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     private var mDocumentRepository = DocumentRepository
     private var mPage = 1
     private var mCompositeDisposable = CompositeDisposable()
+    private var isLoading = false
 
     override fun search(query: String, isMore: Boolean) {
         if (isMore) {
@@ -30,6 +31,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
             .subscribe({
                 if (isMore) {
                     mView.addDocument(it)
+                    isLoading = false
                 } else {
                     mView.setDocument(it)
                 }
@@ -39,6 +41,13 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
             }, {
 
             }))
+    }
+
+    override fun moreLoad() {
+        if (!isLoading) {
+            isLoading = true
+            search(mQuery, true)
+        }
     }
 
     private fun sortList(it: List<Document>): List<Document> {

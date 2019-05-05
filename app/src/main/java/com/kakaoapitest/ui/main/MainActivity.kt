@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import com.kakaoapitest.ext.toast
 import com.kakaoapitest.R
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     companion object {
         const val EXTRA_DOCUMENT_URL = "documentUrl"
     }
+    var reloadSize = 10
     override fun addDocument(documentList: List<Document>) {
         mAdapter.addData(documentList)
     }
@@ -48,6 +50,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
             }
         }
+
+        search_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mAdapter.itemCount - reloadSize) {
+                    mPresenter.moreLoad()
+                }
+            }
+        })
     }
 
     override fun onResume() {
