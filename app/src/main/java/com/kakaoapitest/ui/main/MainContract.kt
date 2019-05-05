@@ -1,6 +1,6 @@
 package com.kakaoapitest.ui.main
 
-import com.kakaoapitest.model.Document
+import com.data.model.Document
 import com.kakaoapitest.ui.base.BasePresenter
 import com.kakaoapitest.ui.base.BaseView
 

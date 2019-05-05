@@ -1,52 +1,28 @@
 package com.kakaoapitest.ui.main
 
 import android.util.Log
-import com.kakaoapitest.model.Document
+import com.data.model.Document
+import com.data.source.DocumentRepository
 import com.kakaoapitest.network.Api
-import io.reactivex.Observable
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
-    var mSortType = SortType.TITLE
-    var mApiType = ApiType.ALL
-    var mQuery = ""
-    var mDocumentList = ArrayList<Document>()
-
+    private var mSortType = SortType.TITLE
+    private var mApiType = ApiType.ALL
+    private var mQuery = ""
+    private var mDocumentRepository = DocumentRepository
+    private var mPage = 1
     override fun search(query: String) {
         search(query, false)
     }
 
     override fun search(query: String, isMore: Boolean) {
+        if (isMore) {
+            mPage++
+        } else {
+            mPage = 0
+        }
         mQuery = query
-        var observableList = ArrayList<Observable<List<Document>>>().apply {
-            when(mApiType) {
-                ApiType.BLOG -> {
-                    add(searchBlog(query))
-                }
-                ApiType.CAFE -> {
-                    add(searchCafe(query))
-                }
-                else -> {
-                    add(searchBlog(query))
-                    add(searchCafe(query))
-                }
-            }
-        }
-        Observable.zip(observableList) {
-            it
-        }.map {
-            Arrays.asList(*it)
-        }.flatMap {
-            Observable.fromIterable(it)
-        }
-            .map {
-                it as ArrayList<Document>
-            }
-            .flatMap {
-                Observable.fromIterable(it)
-            }
-            .toList()
+        mDocumentRepository.moreDocuments(mApiType, mPage, mQuery)
             .map {
                 sortList(it)
             }
@@ -54,13 +30,8 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
             .compose(Api.transformerIOMainThread())
             .subscribe({
                 if (isMore) {
-                    mDocumentList.addAll(it)
                     mView.addDocument(it)
                 } else {
-                    mDocumentList.apply {
-                        clear()
-                        addAll(it)
-                    }
                     mView.setDocument(it)
                 }
 
@@ -86,31 +57,6 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
         }
     }
 
-    private fun searchBlog(query: String): Observable<List<Document>> {
-        return Api.searchBlog(query)
-            .flatMap {
-                Observable.fromIterable(it.documents)
-            }
-            .map {
-                return@map it as Document
-            }
-            .toList()
-            .toObservable()
-    }
-
-
-    private fun searchCafe(query: String): Observable<List<Document>> {
-        return Api.searchCafe(query)
-            .flatMap {
-                Observable.fromIterable(it.documents)
-            }
-            .map {
-                return@map it as Document
-            }
-            .toList()
-            .toObservable()
-    }
-
     override fun changeApiType(index: Int) {
         ApiType.values()[index].apply {
             if (mApiType != this) {
@@ -124,8 +70,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
         SortType.values()[index].apply {
             if (mSortType != this) {
                 mSortType = this
-                sortList(mDocumentList)
-                mView.setDocument(mDocumentList)
+                mView.setDocument(sortList(mDocumentRepository.getAllCacheDocuments()))
             }
         }
     }

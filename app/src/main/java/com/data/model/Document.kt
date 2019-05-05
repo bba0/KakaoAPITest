@@ -1,4 +1,4 @@
-package com.kakaoapitest.model
+package com.data.model
 
 import com.ext.getString
 import com.google.gson.annotations.SerializedName
@@ -39,4 +39,6 @@ abstract class Document {
             }
         } ?: ""
     }
+
+    var isOpen = false
 }

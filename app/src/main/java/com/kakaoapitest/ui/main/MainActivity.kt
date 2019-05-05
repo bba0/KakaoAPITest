@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import com.ext.toast
 import com.kakaoapitest.R
-import com.kakaoapitest.model.Document
+import com.data.model.Document
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {

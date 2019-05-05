@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.kakaoapitest.R
-import com.kakaoapitest.model.Document
+import com.data.model.Document
 
 class DocumentAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val HEADER = 0
