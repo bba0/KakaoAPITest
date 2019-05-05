@@ -4,6 +4,7 @@ import android.util.Log
 import com.data.model.Document
 import com.data.source.DocumentRepository
 import com.kakaoapitest.network.Api
+import io.reactivex.disposables.CompositeDisposable
 
 class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
     private var mSortType = SortType.TITLE
@@ -11,6 +12,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     private var mQuery = ""
     private var mDocumentRepository = DocumentRepository
     private var mPage = 1
+    private var mCompositeDisposable = CompositeDisposable()
 
     override fun search(query: String, isMore: Boolean) {
         if (isMore) {
@@ -19,7 +21,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
             mPage = 1
         }
         mQuery = query
-        mDocumentRepository.moreDocuments(mApiType, mPage, mQuery)
+        mCompositeDisposable.add(mDocumentRepository.moreDocuments(mApiType, mPage, mQuery)
             .map {
                 sortList(it)
             }
@@ -36,7 +38,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
                 Log.e("lol", it.message)
             }, {
 
-            })
+            }))
     }
 
     private fun sortList(it: List<Document>): List<Document> {
@@ -70,6 +72,14 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
                 mView.setDocument(sortList(mDocumentRepository.getAllCacheDocuments()))
             }
         }
+    }
+
+    override fun pause() {
+        mCompositeDisposable.clear()
+    }
+
+    override fun resume() {
+        mView.setDocument(mDocumentRepository.getAllCacheDocuments())
     }
 
     enum class SortType {

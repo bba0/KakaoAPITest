@@ -14,5 +14,7 @@ interface MainContract {
         fun search(query: String, isMore: Boolean)
         fun changeSortType(index: Int)
         fun changeApiType(index: Int)
+        fun resume()
+        fun pause()
     }
 }
