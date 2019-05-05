@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     companion object {
         const val EXTRA_DOCUMENT_URL = "documentUrl"
     }
+
     var reloadSize = 10
     var mAutoCompleteAdapter: ArrayAdapter<String>? = null
     override fun addDocument(documentList: List<Document>) {
@@ -32,11 +33,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         MainPresenter(this)
     }
     private val mLinearLayoutManager = LinearLayoutManager(this)
-    private val mAdapter = DocumentAdapter {
+    private val mAdapter = DocumentAdapter({
         startActivity(Intent(this, DetailActivity::class.java).apply {
             putExtra(EXTRA_DOCUMENT_URL, it.url)
         })
-    }
+    }, {
+
+    }, {
+        mPresenter.changeApiType(it)
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             }
         })
         search_auto_complete_text_view.run {
-            mAutoCompleteAdapter =  ArrayAdapter(context, android.R.layout.simple_list_item_1, ArrayList<String>())
+            mAutoCompleteAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, ArrayList<String>())
             setAdapter(mAutoCompleteAdapter)
             threshold = 1
             setOnTouchListener { _, _ ->

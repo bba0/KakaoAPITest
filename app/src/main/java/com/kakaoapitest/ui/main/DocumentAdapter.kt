@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
 
-class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DocumentAdapter(var onItemClick: (Document) -> Unit, var onSortItemSelect: () -> Unit, var onApiTypeSelect: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val HEADER = 0
     val ITEM = 1
 
@@ -54,7 +55,7 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
                 }
             }
             is HeaderViewHolder -> {
-                p0.sortTestView.run {
+                p0.apiTypeTextView.run {
                     setAdapter(p0.mAutoCompleteAdapter)
                     threshold = 1
                     setOnTouchListener { _, _ ->
@@ -74,7 +75,11 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
                             p0.mAutoCompleteAdapter.add("All")
                             p0.mAutoCompleteAdapter.add("Blog")
                         }
+                        onApiTypeSelect(type)
                     }
+                }
+                p0.sortButton.setOnClickListener {
+                    onSortItemSelect()
                 }
             }
         }
@@ -111,9 +116,10 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
     }
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val sortTestView: AutoCompleteTextView = itemView.findViewById(R.id.sort_text_view)
+        val apiTypeTextView: AutoCompleteTextView = itemView.findViewById(R.id.api_type_text_view)
         var mAutoCompleteAdapter =
             ArrayAdapter(itemView.context, android.R.layout.simple_list_item_1, arrayListOf("Blog", "Cafe"))
+        var sortButton: Button = itemView.findViewById(R.id.sort_button)
     }
 
 }

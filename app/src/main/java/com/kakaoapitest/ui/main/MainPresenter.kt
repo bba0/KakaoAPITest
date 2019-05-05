@@ -8,7 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
     private var mSortType = SortType.TITLE
-    private var mApiType = ApiType.ALL
+    private var mApiType = ApiType.All
     private var mQuery = ""
     private var mDocumentRepository = DocumentRepository
     private var mPage = 1
@@ -69,8 +69,8 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
         }
     }
 
-    override fun changeApiType(index: Int) {
-        ApiType.values()[index].apply {
+    override fun changeApiType(type: String) {
+        ApiType.valueOf(type)?.apply {
             if (mApiType != this) {
                 mApiType = this
                 search(mQuery, false)
@@ -99,6 +99,6 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     }
 
     enum class ApiType {
-        ALL, BLOG, CAFE
+        All, Blog, Cafe
     }
 }

@@ -15,10 +15,10 @@ object RemoteDocumentDataSource : DocumentDataSource {
     override fun moreDocuments(apiType: MainPresenter.ApiType, page: Int, query: String): Single<List<Document>> {
         var observableList = ArrayList<Observable<List<Document>>>().apply {
             when(apiType) {
-                MainPresenter.ApiType.BLOG -> {
+                MainPresenter.ApiType.Blog -> {
                     add(searchBlog(query, page))
                 }
-                MainPresenter.ApiType.CAFE -> {
+                MainPresenter.ApiType.Cafe -> {
                     add(searchCafe(query, page))
                 }
                 else -> {

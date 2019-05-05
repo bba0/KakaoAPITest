@@ -13,7 +13,7 @@ interface MainContract {
     interface Presenter: BasePresenter<View> {
         fun search(query: String, isMore: Boolean)
         fun changeSortType(index: Int)
-        fun changeApiType(index: Int)
+        fun changeApiType(type: String)
         fun moreLoad()
     }
 }
