@@ -2,14 +2,24 @@ package com.kakaoapitest.ui.main
 
 import android.util.Log
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.data.model.SearchQuery
 import com.kakaoapitest.data.source.document.DocumentRepository
+import com.kakaoapitest.data.source.searchquery.SearchQueryRepository
 import com.kakaoapitest.network.Api
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 
-class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
+class MainPresenter(override var mView: MainContract.View, var mSearchQueryRepository: SearchQueryRepository) : MainContract.Presenter {
     private var mSortType = SortType.Title
     private var mApiType = ApiType.All
     private var mQuery = ""
+    set(value) {
+        if (field != value) {
+            mSearchQueryRepository.addSearchQuery(SearchQuery(value))
+            getSearchQuerys()
+        }
+        field = value
+    }
     private var mDocumentRepository = DocumentRepository
     private var mPage = 1
     private var mCompositeDisposable = CompositeDisposable()
@@ -93,6 +103,33 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
 
     override fun resume() {
         mView.setDocument(sortList(mDocumentRepository.getAllCacheDocuments()))
+        getSearchQuerys()
+    }
+
+    private fun getSearchQuerys() {
+        mCompositeDisposable.add(mSearchQueryRepository
+            .getSearchQueryList()
+            .map {
+                it.sortedByDescending { item ->
+                    item.time
+                }
+            }
+            .flatMap {
+                Observable.fromIterable(it)
+            }
+            .map {
+                it.query
+            }
+            .toList()
+            .toObservable()
+            .compose(Api.transformerIOMainThread())
+            .subscribe({
+                mView.setSearchQuery(it)
+            }, {
+                Log.e("lol", it.toString())
+            }, {
+
+            }))
     }
     enum class SortType {
         Title, DateTime

@@ -10,11 +10,22 @@ import android.text.TextUtils
 import android.widget.ArrayAdapter
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.data.source.searchquery.LocalSearchQueryDataSource
+import com.kakaoapitest.data.source.searchquery.SearchQueryRepository
 import com.kakaoapitest.ext.toast
 import com.kakaoapitest.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {
+    override fun setSearchQuery(searchQueryList: List<String>) {
+        mAutoCompleteAdapter?.run {
+            clear()
+            searchQueryList.forEach {
+                add(it)
+            }
+        }
+    }
+
     companion object {
         const val EXTRA_DOCUMENT_URL = "documentUrl"
     }
@@ -23,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     var reloadSize = 10
     var mAutoCompleteAdapter: ArrayAdapter<String>? = null
     private val mPresenter by lazy {
-        MainPresenter(this)
+        MainPresenter(this, SearchQueryRepository(LocalSearchQueryDataSource.getInstance(application)))
     }
     private val mLinearLayoutManager = LinearLayoutManager(this)
     private val mAdapter = DocumentAdapter({
