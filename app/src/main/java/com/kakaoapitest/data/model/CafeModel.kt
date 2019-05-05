@@ -13,4 +13,6 @@ data class CafeModel(@SerializedName("url") override var url: String? = "") : Do
     override var label: String = "Cafe"
     @SerializedName("datetime")
     override var date: Date? = null
+    @SerializedName("contents")
+    override var content: String? = null
 }

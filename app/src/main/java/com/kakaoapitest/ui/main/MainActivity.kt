@@ -1,5 +1,6 @@
 package com.kakaoapitest.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -7,9 +8,13 @@ import android.text.TextUtils
 import com.kakaoapitest.ext.toast
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {
+    companion object {
+        const val EXTRA_DOCUMENT_URL = "documentUrl"
+    }
     override fun addDocument(documentList: List<Document>) {
         mAdapter.addData(documentList)
     }
@@ -23,7 +28,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         MainPresenter(this)
     }
     private val mLinearLayoutManager = LinearLayoutManager(this)
-    private val mAdapter = DocumentAdapter()
+    private val mAdapter = DocumentAdapter {
+        startActivity(Intent(this, DetailActivity::class.java).apply {
+            putExtra(EXTRA_DOCUMENT_URL, it.url)
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -1,7 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.constraint.Guideline
+            android:id="@+id/left_margin24_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp"/>
 
+    <android.support.constraint.Guideline
+            android:id="@+id/right_margin24_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp"/>
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/thumbnail_simple_drawee_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+    <TextView
+            android:id="@+id/name_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/left_margin24_guideline"
+            app:layout_constraintEnd_toEndOf="@id/right_margin24_guideline"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail_simple_drawee_view"/>
+    <TextView
+            android:id="@+id/title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/name_text_view"
+            app:layout_constraintStart_toStartOf="@id/left_margin24_guideline"
+            app:layout_constraintEnd_toEndOf="@id/right_margin24_guideline"/>
+    <TextView
+            android:id="@+id/content_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/left_margin24_guideline"
+            app:layout_constraintEnd_toEndOf="@id/right_margin24_guideline"
+            app:layout_constraintTop_toBottomOf="@id/title_text_view"/>
+    <TextView
+            android:id="@+id/date_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/content_text_view"
+            app:layout_constraintStart_toStartOf="@id/left_margin24_guideline"
+            app:layout_constraintEnd_toEndOf="@id/right_margin24_guideline"/>
+    <TextView
+            android:id="@+id/link_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="@+id/link_button"
+            app:layout_constraintBottom_toBottomOf="@+id/link_button"
+            app:layout_constraintStart_toStartOf="@id/left_margin24_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/link_button"/>
+    <Button
+            android:id="@+id/link_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/right_margin24_guideline"
+            app:layout_constraintTop_toBottomOf="@id/date_text_view"/>
 </android.support.constraint.ConstraintLayout>

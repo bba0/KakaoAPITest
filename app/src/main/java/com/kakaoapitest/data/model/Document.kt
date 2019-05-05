@@ -17,6 +17,8 @@ abstract class Document {
     open var label: String = "Document"
     @SerializedName("document_date")
     open var date: Date? = null
+    @SerializedName("document_content")
+    open var content: String? = ""
     var dateToString: String = ""
     get() {
         return date?.run {

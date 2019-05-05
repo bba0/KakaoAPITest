@@ -9,7 +9,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
 
-class DocumentAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val HEADER = 0
     val ITEM = 1
 
@@ -39,6 +39,9 @@ class DocumentAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     p0.name.text = name
                     p0.label.text = label
                     p0.date.text = dateToString
+                    p0.itemView.setOnClickListener {
+                        onItemClick(this)
+                    }
                 }
             }
         }

@@ -13,4 +13,6 @@ data class BlogModel(@SerializedName("url") override var url: String? = "") : Do
     override var label: String = "Blog"
     @SerializedName("datetime")
     override var date: Date? = null
+    @SerializedName("contents")
+    override var content: String? = null
 }
