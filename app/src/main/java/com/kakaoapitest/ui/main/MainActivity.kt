@@ -1,7 +1,9 @@
 package com.kakaoapitest.ui.main
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,17 +20,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         const val EXTRA_DOCUMENT_URL = "documentUrl"
     }
 
+    var mSortTypeDialog: AlertDialog? = null
     var reloadSize = 10
     var mAutoCompleteAdapter: ArrayAdapter<String>? = null
-    override fun addDocument(documentList: List<Document>) {
-        mAdapter.addData(documentList)
-    }
-
-    override fun setDocument(documentList: List<Document>) {
-        mAdapter.clearData()
-        mAdapter.addData(documentList)
-    }
-
     private val mPresenter by lazy {
         MainPresenter(this)
     }
@@ -38,7 +32,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             putExtra(EXTRA_DOCUMENT_URL, it.url)
         })
     }, {
-
+        showSortDialog()
     }, {
         mPresenter.changeApiType(it)
     })
@@ -87,5 +81,41 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onPause() {
         super.onPause()
         mPresenter.pause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSortTypeDialog?.run {
+            dismiss()
+        }
+    }
+
+    override fun addDocument(documentList: List<Document>) {
+        mAdapter.addData(documentList)
+    }
+
+    override fun setDocument(documentList: List<Document>) {
+        mAdapter.clearData()
+        mAdapter.addData(documentList)
+    }
+
+    private fun showSortDialog() {
+        mSortTypeDialog?.run {
+            dismiss()
+        }
+        mSortTypeDialog = AlertDialog.Builder(this)
+            .setSingleChoiceItems(arrayOf("Title", "Datetime"), 0, null)
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                mSortTypeDialog?.dismiss()
+            }
+            .setPositiveButton(R.string.change) { _, _ ->
+                mSortTypeDialog?.dismiss()
+                mSortTypeDialog?.listView?.checkedItemPosition?.run {
+                    mPresenter.changeSortType(this)
+                }
+            }
+            .setCancelable(true)
+            .create()
+        mSortTypeDialog?.show()
     }
 }

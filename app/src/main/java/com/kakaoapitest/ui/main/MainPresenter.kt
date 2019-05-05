@@ -7,7 +7,7 @@ import com.kakaoapitest.network.Api
 import io.reactivex.disposables.CompositeDisposable
 
 class MainPresenter(override var mView: MainContract.View) : MainContract.Presenter {
-    private var mSortType = SortType.TITLE
+    private var mSortType = SortType.Title
     private var mApiType = ApiType.All
     private var mQuery = ""
     private var mDocumentRepository = DocumentRepository
@@ -56,12 +56,12 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
 
     private fun sortList(it: List<Document>): List<Document> {
         return when (mSortType) {
-            SortType.DATE -> {
+            SortType.DateTime -> {
                 it.sortedBy {
                     it.date?.time ?: 0
                 }
             }
-            SortType.TITLE -> {
+            SortType.Title -> {
                 it.sortedBy {
                     it.title ?: ""
                 }
@@ -95,7 +95,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
         mView.setDocument(sortList(mDocumentRepository.getAllCacheDocuments()))
     }
     enum class SortType {
-        TITLE, DATE
+        Title, DateTime
     }
 
     enum class ApiType {
