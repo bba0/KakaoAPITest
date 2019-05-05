@@ -12,5 +12,6 @@ interface DetailContract {
 
     interface Presenter: BasePresenter<View> {
         fun getDocument(url: String)
+        fun openDocument()
     }
 }

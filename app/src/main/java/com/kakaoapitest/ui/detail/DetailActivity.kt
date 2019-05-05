@@ -25,7 +25,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
             date_text_view.text = dateToString
             link_text_view.text = url
             link_button.setOnClickListener {
-
+                mPresenter.openDocument()
             }
         }
 

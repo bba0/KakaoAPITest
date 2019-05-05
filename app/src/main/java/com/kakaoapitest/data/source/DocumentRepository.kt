@@ -29,7 +29,7 @@ object DocumentRepository : DocumentDataSource {
 
     fun getDocument(url: String): Document? = cacheMap[url]
 
-    fun readDocument(url: String) {
+    fun openDocument(url: String) {
         cacheMap[url]?.isOpen = true
     }
 

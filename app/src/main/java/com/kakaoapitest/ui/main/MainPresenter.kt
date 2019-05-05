@@ -79,7 +79,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     }
 
     override fun resume() {
-        mView.setDocument(mDocumentRepository.getAllCacheDocuments())
+        mView.setDocument(sortList(mDocumentRepository.getAllCacheDocuments()))
     }
 
     enum class SortType {

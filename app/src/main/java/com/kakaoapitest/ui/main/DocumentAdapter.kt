@@ -1,5 +1,6 @@
 package com.kakaoapitest.ui.main
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +43,11 @@ class DocumentAdapter(var onItemClick: (Document) -> Unit) : RecyclerView.Adapte
                     p0.itemView.setOnClickListener {
                         onItemClick(this)
                     }
+                    p0.itemView.setBackgroundResource(if (isOpen) {
+                        R.color.dimmed
+                    } else {
+                        R.color.white
+                    })
                 }
             }
         }
