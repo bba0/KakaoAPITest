@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     override fun addDocument(documentList: List<Document>) {
-
+        mAdapter.addData(documentList)
     }
 
     override fun setDocument(documentList: List<Document>) {
@@ -27,15 +27,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        search_button.setOnClickListener {
-            mPresenter.search(search_edit_text.text.toString())
-        }
         search_recycler_view.adapter = mAdapter
         search_recycler_view.layoutManager = mLinearLayoutManager
         search_button.setOnClickListener {
             search_edit_text.text.toString().run {
                 if (!TextUtils.isEmpty(trim())) {
-                    mPresenter.search(this)
+                    mPresenter.search(this, false)
                 } else {
                     toast(R.string.insert_query)
                 }

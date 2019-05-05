@@ -7,5 +7,4 @@ import io.reactivex.Single
 interface DocumentDataSource {
     fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>>
     fun moreDocuments(apiType: MainPresenter.ApiType, page: Int, query: String): Single<List<Document>>
-    fun getAllCacheDocuments(): List<Document>
 }

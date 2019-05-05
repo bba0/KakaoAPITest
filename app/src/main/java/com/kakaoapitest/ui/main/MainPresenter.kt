@@ -11,15 +11,12 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
     private var mQuery = ""
     private var mDocumentRepository = DocumentRepository
     private var mPage = 1
-    override fun search(query: String) {
-        search(query, false)
-    }
 
     override fun search(query: String, isMore: Boolean) {
         if (isMore) {
             mPage++
         } else {
-            mPage = 0
+            mPage = 1
         }
         mQuery = query
         mDocumentRepository.moreDocuments(mApiType, mPage, mQuery)
@@ -61,7 +58,7 @@ class MainPresenter(override var mView: MainContract.View) : MainContract.Presen
         ApiType.values()[index].apply {
             if (mApiType != this) {
                 mApiType = this
-                search(mQuery)
+                search(mQuery, false)
             }
         }
     }

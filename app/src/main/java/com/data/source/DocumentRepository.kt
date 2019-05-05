@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 object DocumentRepository : DocumentDataSource {
-    override fun getAllCacheDocuments(): List<Document> = ArrayList(cacheMap.values)
+    fun getAllCacheDocuments(): List<Document> = ArrayList(cacheMap.values)
 
     var remoteDocumentDataSource = RemoteDocumentDataSource
     var  cacheMap = HashMap<String, Document>()

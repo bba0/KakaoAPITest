@@ -9,20 +9,21 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 object RemoteDocumentDataSource : DocumentDataSource {
+
     override fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>> = moreDocuments(apiType, 1, query)
 
     override fun moreDocuments(apiType: MainPresenter.ApiType, page: Int, query: String): Single<List<Document>> {
         var observableList = ArrayList<Observable<List<Document>>>().apply {
             when(apiType) {
                 MainPresenter.ApiType.BLOG -> {
-                    add(searchBlog(query))
+                    add(searchBlog(query, page))
                 }
                 MainPresenter.ApiType.CAFE -> {
-                    add(searchCafe(query))
+                    add(searchCafe(query, page))
                 }
                 else -> {
-                    add(searchBlog(query))
-                    add(searchCafe(query))
+                    add(searchBlog(query, page))
+                    add(searchCafe(query, page))
                 }
             }
         }
@@ -42,8 +43,8 @@ object RemoteDocumentDataSource : DocumentDataSource {
             .toList()
     }
 
-    private fun searchBlog(query: String): Observable<List<Document>> {
-        return Api.searchBlog(query)
+    private fun searchBlog(query: String, page: Int): Observable<List<Document>> {
+        return Api.searchBlog(query, page)
             .flatMap {
                 Observable.fromIterable(it.documents)
             }
@@ -55,8 +56,8 @@ object RemoteDocumentDataSource : DocumentDataSource {
     }
 
 
-    private fun searchCafe(query: String): Observable<List<Document>> {
-        return Api.searchCafe(query)
+    private fun searchCafe(query: String, page: Int): Observable<List<Document>> {
+        return Api.searchCafe(query, page)
             .flatMap {
                 Observable.fromIterable(it.documents)
             }

@@ -49,12 +49,12 @@ object Api {
 
     private fun request(): ApiService = retrofit.create(ApiService::class.java)
 
-    fun searchBlog(query: String) : Observable<SearchApiModel<BlogModel>> {
-        return request().searchBlog(query = query)
+    fun searchBlog(query: String, page: Int) : Observable<SearchApiModel<BlogModel>> {
+        return request().searchBlog(query = query, page = page)
     }
 
-    fun searchCafe(query: String) : Observable<SearchApiModel<CafeModel>> {
-        return request().searchCafe(query = query)
+    fun searchCafe(query: String, page: Int) : Observable<SearchApiModel<CafeModel>> {
+        return request().searchCafe(query = query, page = page)
     }
 
     fun <T> transformerIOMainThread(): ObservableTransformer<T, T> {
