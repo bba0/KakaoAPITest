@@ -61,6 +61,7 @@ class MainUnitTest {
 
     @Test
     fun moreLoad() {
+        //더 보기 호출 테스트
         mMainPresenter.moreLoad()
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(1)).addDocument(ArgumentMatchers.anyList())
@@ -68,29 +69,40 @@ class MainUnitTest {
 
     @Test
     fun changeApiType() {
+        //기본이 All이기 때문에 호출안됨
         mMainPresenter.changeApiType(MainPresenter.ApiType.All.name)
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(0)).setDocument(ArgumentMatchers.anyList())
 
+        //변경 후 호출
         mMainPresenter.changeApiType(MainPresenter.ApiType.Cafe.name)
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(1)).setDocument(ArgumentMatchers.anyList())
 
+        //변경 후 호출
         mMainPresenter.changeApiType(MainPresenter.ApiType.Blog.name)
+        Thread.sleep(1000)
+        mMainInOrder.verify(mMainView, times(1)).setDocument(ArgumentMatchers.anyList())
+
+        //변경 후 호출
+        mMainPresenter.changeApiType(MainPresenter.ApiType.All.name)
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(1)).setDocument(ArgumentMatchers.anyList())
     }
 
     @Test
     fun changeSortType() {
+        //변경 후 호출
         mMainPresenter.changeSortType(MainPresenter.SortType.DateTime.ordinal)
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(1)).setDocument(ArgumentMatchers.anyList())
 
+        //변경 후 호출
         mMainPresenter.changeSortType(MainPresenter.SortType.Title.ordinal)
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(1)).setDocument(ArgumentMatchers.anyList())
 
+        //같은 값이기 때문에 무시
         mMainPresenter.changeSortType(MainPresenter.SortType.Title.ordinal)
         Thread.sleep(1000)
         mMainInOrder.verify(mMainView, times(0)).setDocument(ArgumentMatchers.anyList())
