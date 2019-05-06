@@ -12,7 +12,7 @@ class DetailPresenter(override var mView: DetailContract.View) : DetailContract.
 
     }
 
-    private var mDocumentRepository = DocumentRepository
+    private var mDocumentRepository = DocumentRepository.getInstance()
     override fun pause() {
     }
 

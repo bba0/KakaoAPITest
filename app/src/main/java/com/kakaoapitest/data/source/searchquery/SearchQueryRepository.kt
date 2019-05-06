@@ -3,7 +3,7 @@ package com.kakaoapitest.data.source.searchquery
 import com.kakaoapitest.data.model.SearchQuery
 import io.reactivex.Observable
 
-class SearchQueryRepository(private var localSearchQueryDataSource: LocalSearchQueryDataSource) : SearchQueryDataSource {
+class SearchQueryRepository private constructor(private val localSearchQueryDataSource: SearchQueryDataSource) : SearchQueryDataSource {
     private var  cacheMap = HashMap<String, SearchQuery>()
     override fun addSearchQuery(searchQuery: SearchQuery) {
         cacheMap[searchQuery.query] = searchQuery
@@ -32,6 +32,19 @@ class SearchQueryRepository(private var localSearchQueryDataSource: LocalSearchQ
                 .map {
                     ArrayList<SearchQuery>(it)
                 }
+        }
+    }
+
+    companion object {
+        private var INSTANCE: SearchQueryRepository? = null
+        @JvmStatic
+        fun getInstance(localSearchQueryDataSource: SearchQueryDataSource): SearchQueryRepository {
+            if (INSTANCE == null) {
+                synchronized(LocalSearchQueryDataSource::class.java) {
+                    INSTANCE = SearchQueryRepository(localSearchQueryDataSource)
+                }
+            }
+            return INSTANCE!!
         }
     }
 }

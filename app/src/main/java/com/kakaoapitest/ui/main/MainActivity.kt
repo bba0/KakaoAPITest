@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     var reloadSize = 10
     var mAutoCompleteAdapter: ArrayAdapter<String>? = null
     private val mPresenter by lazy {
-        MainPresenter(this, SearchQueryRepository(LocalSearchQueryDataSource.getInstance(application)))
+        MainPresenter(this, SearchQueryRepository.getInstance(LocalSearchQueryDataSource.getInstance(application)))
     }
     private val mLinearLayoutManager = LinearLayoutManager(this)
     private val mAdapter = DocumentAdapter({

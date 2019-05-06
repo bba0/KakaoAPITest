@@ -1,11 +1,14 @@
 package com.kakaoapitest.data.source.document
 
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.data.source.searchquery.LocalSearchQueryDataSource
+import com.kakaoapitest.data.source.searchquery.SearchQueryDataSource
+import com.kakaoapitest.data.source.searchquery.SearchQueryRepository
 import com.kakaoapitest.ui.main.MainPresenter
 import io.reactivex.Observable
 import io.reactivex.Single
 
-object DocumentRepository : DocumentDataSource {
+class DocumentRepository private constructor(): DocumentDataSource {
     fun getAllCacheDocuments(): List<Document> = ArrayList(cacheMap.values)
 
     var remoteDocumentDataSource = RemoteDocumentDataSource
@@ -34,5 +37,16 @@ object DocumentRepository : DocumentDataSource {
         cacheMap[url]?.isOpen = true
     }
 
-
+    companion object {
+        private var INSTANCE: DocumentRepository? = null
+        @JvmStatic
+        fun getInstance(): DocumentRepository {
+            if (INSTANCE == null) {
+                synchronized(LocalSearchQueryDataSource::class.java) {
+                    INSTANCE = DocumentRepository()
+                }
+            }
+            return INSTANCE!!
+        }
+    }
 }

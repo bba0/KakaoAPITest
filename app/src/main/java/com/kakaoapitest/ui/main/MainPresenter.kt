@@ -20,7 +20,7 @@ class MainPresenter(override var mView: MainContract.View, var mSearchQueryRepos
         }
         field = value
     }
-    private var mDocumentRepository = DocumentRepository
+    private var mDocumentRepository = DocumentRepository.getInstance()
     private var mPage = 1
     private var mCompositeDisposable = CompositeDisposable()
     private var isLoading = false
