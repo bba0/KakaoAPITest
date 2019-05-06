@@ -1,7 +1,6 @@
 package com.kakaoapitest.data.source.document
 
 import com.kakaoapitest.data.model.Document
-import com.kakaoapitest.data.source.searchquery.LocalSearchQueryDataSource
 import com.kakaoapitest.network.Api
 import com.kakaoapitest.network.ApiService
 import com.kakaoapitest.ui.main.MainPresenter
@@ -10,14 +9,14 @@ import io.reactivex.Single
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RemoteDocumentDataSource private constructor(var api: ApiService): DocumentDataSource {
+class RemoteDocumentDataSource private constructor(var api: ApiService) : DocumentDataSource {
 
     override fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>> =
         moreDocuments(apiType, 1, query)
 
     override fun moreDocuments(apiType: MainPresenter.ApiType, page: Int, query: String): Single<List<Document>> {
         var observableList = ArrayList<Observable<List<Document>>>().apply {
-            when(apiType) {
+            when (apiType) {
                 MainPresenter.ApiType.Blog -> {
                     add(searchBlog(query, page))
                 }
@@ -36,14 +35,11 @@ class RemoteDocumentDataSource private constructor(var api: ApiService): Documen
             Arrays.asList(*it)
         }.flatMap {
             Observable.fromIterable(it)
-        }
-            .map {
-                it as ArrayList<Document>
-            }
-            .flatMap {
-                Observable.fromIterable(it)
-            }
-            .toList()
+        }.map {
+            it as ArrayList<Document>
+        }.flatMap {
+            Observable.fromIterable(it)
+        }.toList()
     }
 
     private fun searchBlog(query: String, page: Int): Observable<List<Document>> {

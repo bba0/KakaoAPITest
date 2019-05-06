@@ -58,10 +58,4 @@ object Api : ApiService {
         return request().searchCafe(query = query, page = page)
     }
 
-    fun <T> transformerIOMainThread(): ObservableTransformer<T, T> {
-        return ObservableTransformer { upstream ->
-            upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-        }
-    }
-
 }

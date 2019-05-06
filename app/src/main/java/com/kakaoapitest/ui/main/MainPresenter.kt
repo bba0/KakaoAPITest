@@ -5,9 +5,11 @@ import com.kakaoapitest.data.model.Document
 import com.kakaoapitest.data.model.SearchQuery
 import com.kakaoapitest.data.source.document.DocumentRepository
 import com.kakaoapitest.data.source.searchquery.SearchQueryRepository
-import com.kakaoapitest.network.Api
 import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class MainPresenter(override var mView: MainContract.View, private var mSearchQueryRepository: SearchQueryRepository, private var mDocumentRepository: DocumentRepository) : MainContract.Presenter {
     private var mSortType = SortType.Title
@@ -40,7 +42,7 @@ class MainPresenter(override var mView: MainContract.View, private var mSearchQu
                 sortList(it)
             }
             .toObservable()
-            .compose(Api.transformerIOMainThread())
+            .compose(transformerIOMainThread())
             .subscribe({
                 if (isMore) {
                     mView.addDocument(it)
@@ -121,7 +123,7 @@ class MainPresenter(override var mView: MainContract.View, private var mSearchQu
             }
             .toList()
             .toObservable()
-            .compose(Api.transformerIOMainThread())
+            .compose(transformerIOMainThread())
             .subscribe({
                 mView.setSearchQuery(it)
             }, {
@@ -130,6 +132,13 @@ class MainPresenter(override var mView: MainContract.View, private var mSearchQu
 
             }))
     }
+
+    private fun <T> transformerIOMainThread(): ObservableTransformer<T, T> {
+        return ObservableTransformer { upstream ->
+            upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
     enum class SortType {
         Title, DateTime
     }
