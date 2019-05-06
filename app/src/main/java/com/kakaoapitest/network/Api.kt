@@ -14,7 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-object Api {
+object Api : ApiService {
+
     private const val HOST = "https://dapi.kakao.com"
     private const val KAKAO_API_KEY = "KakaoAK 0904ee87d5006949d5c8c5aeeb303038"
     private const val GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS+HH:mm"
@@ -49,11 +50,11 @@ object Api {
 
     private fun request(): ApiService = retrofit.create(ApiService::class.java)
 
-    fun searchBlog(query: String, page: Int) : Observable<SearchApiModel<BlogModel>> {
+    override fun searchBlog(query: String, page: Int, size: Int): Observable<SearchApiModel<BlogModel>> {
         return request().searchBlog(query = query, page = page)
     }
 
-    fun searchCafe(query: String, page: Int) : Observable<SearchApiModel<CafeModel>> {
+    override fun searchCafe(query: String, page: Int, size: Int): Observable<SearchApiModel<CafeModel>> {
         return request().searchCafe(query = query, page = page)
     }
 

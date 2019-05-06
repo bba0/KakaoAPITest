@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.data.source.document.DocumentRepository
+import com.kakaoapitest.data.source.document.RemoteDocumentDataSource
 import com.kakaoapitest.ext.toast
+import com.kakaoapitest.network.Api
 import com.kakaoapitest.ui.main.MainActivity
 import com.kakaoapitest.ui.webview.WebViewActivity
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -42,7 +45,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
     }
 
     private val mPresenter by lazy {
-        DetailPresenter(this)
+        DetailPresenter(this, DocumentRepository.getInstance(RemoteDocumentDataSource.getInstance(Api)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

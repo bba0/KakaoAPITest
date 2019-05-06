@@ -1,14 +1,16 @@
 package com.kakaoapitest.data.source.document
 
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.data.source.searchquery.LocalSearchQueryDataSource
 import com.kakaoapitest.network.Api
+import com.kakaoapitest.network.ApiService
 import com.kakaoapitest.ui.main.MainPresenter
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.*
 import kotlin.collections.ArrayList
 
-object RemoteDocumentDataSource : DocumentDataSource {
+class RemoteDocumentDataSource private constructor(var api: ApiService): DocumentDataSource {
 
     override fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>> =
         moreDocuments(apiType, 1, query)
@@ -45,7 +47,7 @@ object RemoteDocumentDataSource : DocumentDataSource {
     }
 
     private fun searchBlog(query: String, page: Int): Observable<List<Document>> {
-        return Api.searchBlog(query, page)
+        return Api.searchBlog(query, page, 25)
             .flatMap {
                 Observable.fromIterable(it.documents)
             }
@@ -58,7 +60,7 @@ object RemoteDocumentDataSource : DocumentDataSource {
 
 
     private fun searchCafe(query: String, page: Int): Observable<List<Document>> {
-        return Api.searchCafe(query, page)
+        return Api.searchCafe(query, page, 25)
             .flatMap {
                 Observable.fromIterable(it.documents)
             }
@@ -67,6 +69,19 @@ object RemoteDocumentDataSource : DocumentDataSource {
             }
             .toList()
             .toObservable()
+    }
+
+    companion object {
+        private var INSTANCE: RemoteDocumentDataSource? = null
+        @JvmStatic
+        fun getInstance(api: ApiService): RemoteDocumentDataSource {
+            if (INSTANCE == null) {
+                synchronized(RemoteDocumentDataSource::class.java) {
+                    INSTANCE = RemoteDocumentDataSource(api)
+                }
+            }
+            return INSTANCE!!
+        }
     }
 
 }

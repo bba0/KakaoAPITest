@@ -10,9 +10,12 @@ import android.text.TextUtils
 import android.widget.ArrayAdapter
 import com.kakaoapitest.R
 import com.kakaoapitest.data.model.Document
+import com.kakaoapitest.data.source.document.DocumentRepository
+import com.kakaoapitest.data.source.document.RemoteDocumentDataSource
 import com.kakaoapitest.data.source.searchquery.LocalSearchQueryDataSource
 import com.kakaoapitest.data.source.searchquery.SearchQueryRepository
 import com.kakaoapitest.ext.toast
+import com.kakaoapitest.network.Api
 import com.kakaoapitest.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -34,7 +37,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     var reloadSize = 10
     var mAutoCompleteAdapter: ArrayAdapter<String>? = null
     private val mPresenter by lazy {
-        MainPresenter(this, SearchQueryRepository.getInstance(LocalSearchQueryDataSource.getInstance(application)))
+        MainPresenter(this,
+            SearchQueryRepository.getInstance(LocalSearchQueryDataSource.getInstance(application)),
+            DocumentRepository.getInstance(RemoteDocumentDataSource.getInstance(Api)))
     }
     private val mLinearLayoutManager = LinearLayoutManager(this)
     private val mAdapter = DocumentAdapter({

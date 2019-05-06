@@ -9,7 +9,7 @@ import com.kakaoapitest.network.Api
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 
-class MainPresenter(override var mView: MainContract.View, var mSearchQueryRepository: SearchQueryRepository) : MainContract.Presenter {
+class MainPresenter(override var mView: MainContract.View, private var mSearchQueryRepository: SearchQueryRepository, private var mDocumentRepository: DocumentRepository) : MainContract.Presenter {
     private var mSortType = SortType.Title
     private var mApiType = ApiType.All
     private var mQuery = ""
@@ -20,7 +20,6 @@ class MainPresenter(override var mView: MainContract.View, var mSearchQueryRepos
         }
         field = value
     }
-    private var mDocumentRepository = DocumentRepository.getInstance()
     private var mPage = 1
     private var mCompositeDisposable = CompositeDisposable()
     private var isLoading = false

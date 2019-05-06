@@ -40,7 +40,7 @@ class SearchQueryRepository private constructor(private val localSearchQueryData
         @JvmStatic
         fun getInstance(localSearchQueryDataSource: SearchQueryDataSource): SearchQueryRepository {
             if (INSTANCE == null) {
-                synchronized(LocalSearchQueryDataSource::class.java) {
+                synchronized(SearchQueryRepository::class.java) {
                     INSTANCE = SearchQueryRepository(localSearchQueryDataSource)
                 }
             }

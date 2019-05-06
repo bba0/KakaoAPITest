@@ -3,7 +3,7 @@ package com.kakaoapitest.ui.detail
 import com.kakaoapitest.data.model.Document
 import com.kakaoapitest.data.source.document.DocumentRepository
 
-class DetailPresenter(override var mView: DetailContract.View) : DetailContract.Presenter {
+class DetailPresenter(override var mView: DetailContract.View, var mDocumentRepository: DocumentRepository) : DetailContract.Presenter {
     private var mDocument: Document? = null
     override fun openDocument() {
         mDocument?.url?.run {
@@ -11,8 +11,6 @@ class DetailPresenter(override var mView: DetailContract.View) : DetailContract.
         }
 
     }
-
-    private var mDocumentRepository = DocumentRepository.getInstance()
     override fun pause() {
     }
 

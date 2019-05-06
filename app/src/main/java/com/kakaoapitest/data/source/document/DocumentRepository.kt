@@ -8,16 +8,15 @@ import com.kakaoapitest.ui.main.MainPresenter
 import io.reactivex.Observable
 import io.reactivex.Single
 
-class DocumentRepository private constructor(): DocumentDataSource {
+class DocumentRepository private constructor(var remoteDocumentDataSource: DocumentDataSource): DocumentDataSource {
     fun getAllCacheDocuments(): List<Document> = ArrayList(cacheMap.values)
 
-    var remoteDocumentDataSource = RemoteDocumentDataSource
     var  cacheMap = HashMap<String, Document>()
     override fun getDocuments(apiType: MainPresenter.ApiType, query: String): Single<List<Document>> =
         moreDocuments(apiType, 0, query)
 
     override fun moreDocuments(apiType: MainPresenter.ApiType, page: Int, query: String): Single<List<Document>> {
-        return RemoteDocumentDataSource.moreDocuments(apiType, page, query)
+        return remoteDocumentDataSource.moreDocuments(apiType, page, query)
             .toObservable()
             .flatMap {
                 Observable.fromIterable(it)
@@ -40,10 +39,10 @@ class DocumentRepository private constructor(): DocumentDataSource {
     companion object {
         private var INSTANCE: DocumentRepository? = null
         @JvmStatic
-        fun getInstance(): DocumentRepository {
+        fun getInstance(remoteDocumentDataSource: DocumentDataSource): DocumentRepository {
             if (INSTANCE == null) {
-                synchronized(LocalSearchQueryDataSource::class.java) {
-                    INSTANCE = DocumentRepository()
+                synchronized(DocumentRepository::class.java) {
+                    INSTANCE = DocumentRepository(remoteDocumentDataSource)
                 }
             }
             return INSTANCE!!
