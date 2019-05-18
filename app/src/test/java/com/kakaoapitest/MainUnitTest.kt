@@ -18,8 +18,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.InOrder
 import org.mockito.Mock
-import org.mockito.Mockito.inOrder
-import org.mockito.Mockito.times
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 
@@ -29,6 +28,8 @@ class MainUnitTest {
     lateinit var mMainView: MainContract.View
     @Mock
     lateinit var mSearchQueryDataSource: SearchQueryDataSource
+    @Mock
+    lateinit var context:Context
 
     private lateinit var mMainPresenter: MainPresenter
     private lateinit var mDocumentRepository: DocumentRepository
@@ -109,11 +110,10 @@ class MainUnitTest {
         mMainInOrder.verify(mMainView, times(0)).setDocument(ArgumentMatchers.anyList())
     }
 
-//    @Test
-//    fun saveQuery() {
-//        //kotlin not null 이슈로 테스트 방법 필요
+    @Test
+    fun saveQuery() {
+        //kotlin not null 이슈로 테스트 방법 필요
+//        `when`(mSearchQueryDataSource.addSearchQuery(searchQuery)).thenReturn(Unit)
 //        mSearchQueryDataSourceInorder.verify(mSearchQueryDataSource, times(1)).addSearchQuery(ArgumentMatchers.any(SearchQuery::class.java))
-//    }
-
-
+    }
 }
