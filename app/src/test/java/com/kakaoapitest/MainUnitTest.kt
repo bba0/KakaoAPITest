@@ -1,6 +1,7 @@
 package com.kakaoapitest
 
 
+import android.content.Context
 import com.kakaoapitest.data.model.SearchQuery
 import com.kakaoapitest.data.source.document.DocumentRepository
 import com.kakaoapitest.data.source.document.RemoteDocumentDataSource
