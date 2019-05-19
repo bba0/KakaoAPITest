@@ -9,6 +9,17 @@ buildscript {
         retrofitVersion = '2.5.0'
         gsonVersion = '2.8.5'
         frescoVersion = '1.13.0'
+        androidXVersion = '1.0.0'
+        androidXAnnotations = '1.0.1'
+        androidXLegacySupport = '1.0.0'
+        materialVersion = '1.0.0'
+        cardVersion = '1.0.0'
+        recyclerViewVersion = '1.0.0'
+        appCompatVersion = '1.0.2'
+        roomVersion = '2.0.0'
+        archLifecycleVersion = '2.0.0'
+        espressoVersion = '3.1.1'
+        guavaVersion = '27.0.1-android'
     }
 
     repositories {

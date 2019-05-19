@@ -1,9 +1,10 @@
 package com.kakaoapitest.ui.webview
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.kakaoapitest.R
 import com.kakaoapitest.ui.detail.DetailActivity
 import com.kakaoapitest.ui.main.MainActivity
@@ -15,7 +16,7 @@ class WebViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_webview)
         setWebView()
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         intent.extras?.run {
             getString(MainActivity.EXTRA_DOCUMENT_URL)?.run {

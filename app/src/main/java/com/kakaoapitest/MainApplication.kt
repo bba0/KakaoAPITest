@@ -1,9 +1,9 @@
 package com.kakaoapitest
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import com.facebook.drawee.backends.pipeline.Fresco
 
-class MainApplication : Application() {
+class MainApplication : MultiDexApplication() {
     companion object {
 
     }
