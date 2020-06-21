@@ -26,7 +26,7 @@ object Api : ApiService {
             create()
         }
     }
-    val retrofit: Retrofit by lazy {
+    private val retrofit: Retrofit by lazy {
         val client = OkHttpClient.Builder().run {
             addInterceptor {
                 var originalRequest = it.request()
@@ -47,15 +47,16 @@ object Api : ApiService {
         }
     }
 
-
-    private fun request(): ApiService = retrofit.create(ApiService::class.java)
+    private val apiService: ApiService by lazy {
+        retrofit.create(ApiService::class.java)
+    }
 
     override fun searchBlog(query: String, page: Int, size: Int): Observable<SearchApiModel<BlogModel>> {
-        return request().searchBlog(query = query, page = page)
+        return apiService.searchBlog(query = query, page = page)
     }
 
     override fun searchCafe(query: String, page: Int, size: Int): Observable<SearchApiModel<CafeModel>> {
-        return request().searchCafe(query = query, page = page)
+        return apiService.searchCafe(query = query, page = page)
     }
 
 }

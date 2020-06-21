@@ -56,15 +56,9 @@ class RemoteDocumentDataSource private constructor(var api: ApiService) : Docume
 
 
     private fun searchCafe(query: String, page: Int): Observable<List<Document>> {
-        return Api.searchCafe(query, page, 25)
-            .flatMap {
-                Observable.fromIterable(it.documents)
-            }
-            .map {
-                return@map it as Document
-            }
-            .toList()
-            .toObservable()
+        return Api.searchCafe(query, page, 25).map {
+            it.documents
+        }
     }
 
     companion object {
